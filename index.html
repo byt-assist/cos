@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COS — Consensus Oracle Synchronizer | BYT Ecosystem</title>
+    <meta name="description" content="COS is the minimalist token of the BYT ecosystem for Consensus Oracle Synchronizer. Sync oracles across chains. Stake for rewards.">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ===== ОСНОВНЫЕ СТИЛИ ===== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #FFFFFF; color: #1A1A1A; line-height: 1.6; overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 40px; }
+        
+        /* ===== HEADER ===== */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: transparent;
+            transition: all 0.3s ease;
+            color: #FFFFFF;
+        }
+        .header.scrolled {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 12px 40px;
+            color: #1A1A1A;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+        }
+        .header.scrolled .nav a { color: #1A1A1A; }
+        .header.scrolled .wallet-btn { border-color: #1A1A1A; color: #1A1A1A; }
+        .header.scrolled .wallet-btn:hover { background: #1A1A1A; color: #FFFFFF; }
+        .header.scrolled .lang-select { border-color: #1A1A1A; color: #1A1A1A; }
+        
+        .logo img { height: 32px; width: auto; display: block; }
+        .nav a { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; margin-left: 30px; opacity: 0.6; transition: opacity 0.3s; font-weight: 500; }
+        .nav a:hover { opacity: 1; }
+        .header-controls { display: flex; align-items: center; gap: 16px; }
+        .lang-select { background: transparent; border: 1px solid rgba(255,255,255,0.3); color: #FFFFFF; padding: 8px 12px; border-radius: 4px; font-size: 11px; cursor: pointer; }
+        .lang-select option { background: #1A1A1A; color: #FFFFFF; }
+        .wallet-btn { background: transparent; border: 1px solid rgba(255,255,255,0.3); color: #FFFFFF; padding: 8px 20px; border-radius: 30px; font-size: 11px; font-weight: 500; cursor: pointer; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px; }
+        .wallet-btn:hover { background: #FFFFFF; color: #1A1A1A; }
+        
+        /* ===== HERO (видео 1) ===== */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            background: #0A0A0A;
+        }
+        .hero-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+            z-index: 0;
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.35);
+            z-index: 1;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            padding: 0 20px;
+            color: #FFFFFF;
+        }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 6px 24px;
+            border-radius: 30px;
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #FFFFFF;
+            margin-bottom: 30px;
+            font-weight: 300;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        .hero-title {
+            font-size: 80px;
+            font-weight: 300;
+            line-height: 1;
+            margin-bottom: 16px;
+            letter-spacing: -2px;
+            text-transform: uppercase;
+        }
+        .hero-title span { font-weight: 600; }
+        .hero-subtitle {
+            font-size: 16px;
+            font-weight: 300;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            opacity: 0.8;
+            margin-bottom: 40px;
+        }
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            flex-wrap: wrap;
+        }
+        .stat { text-align: center; }
+        .stat-value { font-size: 28px; font-weight: 300; letter-spacing: 1px; color: #FFFFFF; }
+        .stat-label { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; opacity: 0.6; margin-top: 4px; }
+        
+        /* ===== ABOUT (видео 2 - фон) ===== */
+        .about {
+            padding: 100px 0;
+            position: relative;
+            overflow: hidden;
+            background: #0A0A0A;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+        .about-video-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        .about-video-bg video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .about-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+        .about .container {
+            position: relative;
+            z-index: 2;
+        }
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+        .about-image img { width: 100%; height: 500px; object-fit: cover; border-radius: 4px; }
+        .about-text h2 { font-size: 48px; font-weight: 300; letter-spacing: 1px; margin-bottom: 20px; color: #FFFFFF; }
+        .about-text h2 span { font-weight: 600; }
+        .about-text p { font-size: 16px; opacity: 0.7; margin-bottom: 30px; line-height: 1.8; color: #FFFFFF; }
+        .about-features { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .feature { background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 4px; text-align: center; backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.05); }
+        .feature-icon { font-size: 28px; margin-bottom: 8px; }
+        .feature-title { font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; color: #FFFFFF; }
+        
+        /* ===== ECOSYSTEM ===== */
+        .ecosystem { padding: 100px 0; background: #FFFFFF; border-top: 1px solid #F0F0F0; }
+        .section-header { text-align: center; margin-bottom: 60px; }
+        .section-header h2 { font-size: 48px; font-weight: 300; letter-spacing: 2px; }
+        .section-header h2 span { font-weight: 600; }
+        .section-header p { font-size: 16px; opacity: 0.5; margin-top: 12px; }
+        .brand-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
+        .brand-card { background: #F5F5F5; padding: 24px 16px; border-radius: 4px; text-align: center; transition: all 0.3s ease; }
+        .brand-card:hover { transform: translateY(-4px); background: #E8E8E8; }
+        .brand-logo { font-size: 24px; margin-bottom: 8px; font-weight: 600; }
+        .brand-name { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.6; }
+        .brand-price { font-size: 11px; color: #1A1A1A; margin-top: 4px; font-weight: 500; }
+        
+        /* ===== COLLECTION (видео 3 - фон) ===== */
+        .collection {
+            padding: 100px 0;
+            position: relative;
+            overflow: hidden;
+            background: #0A0A0A;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+        .collection-video-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        .collection-video-bg video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .collection-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+        .collection .container {
+            position: relative;
+            z-index: 2;
+        }
+        .collection-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+        .collection-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .collection-card img { width: 100%; height: 400px; object-fit: cover; transition: all 0.5s ease; }
+        .collection-card:hover img { transform: scale(1.02); }
+        .collection-card .overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 30px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            color: #FFFFFF;
+        }
+        .collection-card .overlay h3 { font-size: 22px; font-weight: 300; letter-spacing: 1px; }
+        .collection-card .overlay p { font-size: 13px; opacity: 0.6; margin-top: 4px; }
+        
+        /* ===== STAKING ===== */
+        .staking { padding: 100px 0; background: #FFFFFF; border-top: 1px solid #F0F0F0; }
+        .staking-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+        .pool-card { background: #F5F5F5; padding: 40px 30px; border-radius: 4px; text-align: center; transition: all 0.3s ease; }
+        .pool-card:hover { transform: translateY(-4px); background: #E8E8E8; }
+        .pool-card.premium { border-left: 3px solid #1A1A1A; }
+        .pool-icon { font-size: 40px; margin-bottom: 16px; }
+        .pool-card h3 { font-size: 22px; font-weight: 500; letter-spacing: 1px; margin-bottom: 8px; }
+        .apy { font-size: 32px; font-weight: 300; color: #1A1A1A; margin: 16px 0; }
+        .apy small { font-size: 14px; font-weight: 300; opacity: 0.4; }
+        .pool-desc { font-size: 13px; opacity: 0.5; margin-bottom: 20px; }
+        .pool-btn { display: inline-block; padding: 10px 28px; background: transparent; border: 1px solid #1A1A1A; color: #1A1A1A; border-radius: 30px; transition: all 0.3s ease; text-transform: uppercase; font-size: 11px; letter-spacing: 1px; font-weight: 500; cursor: pointer; }
+        .pool-btn:hover { background: #1A1A1A; color: #FFFFFF; }
+        
+        /* ===== LIQUIDITY ===== */
+        .liquidity-section { padding: 80px 0; background: #FFFFFF; border-top: 1px solid #F0F0F0; border-bottom: 1px solid #F0F0F0; }
+        
+        /* ===== CONTRACT ===== */
+        .contract-section { padding: 60px 0; background: #FFFFFF; border-top: 1px solid #F0F0F0; border-bottom: 1px solid #F0F0F0; }
+        .contract-box { max-width: 900px; margin: 0 auto; text-align: center; padding: 30px; background: #F5F5F5; border-radius: 4px; }
+        .contract-box h3 { font-size: 12px; text-transform: uppercase; letter-spacing: 3px; opacity: 0.4; margin-bottom: 12px; }
+        .contract-box code { font-family: 'Courier New', monospace; font-size: 14px; color: #1A1A1A; word-break: break-all; display: block; margin: 16px 0; padding: 12px; background: #FFFFFF; border-radius: 4px; border: 1px solid #E0E0E0; }
+        .contract-box .copy-btn { background: transparent; border: 1px solid #1A1A1A; color: #1A1A1A; padding: 8px 24px; border-radius: 30px; font-weight: 500; cursor: pointer; transition: all 0.3s; text-transform: uppercase; letter-spacing: 1px; font-size: 11px; }
+        .contract-box .copy-btn:hover { background: #1A1A1A; color: #FFFFFF; }
+        .contract-box .links { margin-top: 16px; display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+        .contract-box .links a { font-size: 12px; color: #1A1A1A; text-decoration: underline; opacity: 0.4; transition: opacity 0.3s; }
+        .contract-box .links a:hover { opacity: 1; }
+        
+        /* ===== COUNTER ===== */
+        .counter-section { padding: 60px 0; background: #FFFFFF; border-top: 1px solid #F0F0F0; border-bottom: 1px solid #F0F0F0; }
+        .counter-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; max-width: 800px; margin: 0 auto; text-align: center; }
+        .counter-item { padding: 30px; background: #F5F5F5; border-radius: 4px; }
+        .counter-number { font-size: 56px; font-weight: 300; color: #1A1A1A; letter-spacing: 2px; }
+        .counter-label { font-size: 12px; text-transform: uppercase; letter-spacing: 3px; opacity: 0.4; margin-top: 8px; }
+        .counter-timestamp { font-size: 10px; opacity: 0.3; margin-top: 16px; font-family: 'Courier New', monospace; }
+        
+        /* ===== TICKER ===== */
+        .ticker { background: #1A1A1A; padding: 10px 0; overflow: hidden; border-top: 1px solid rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .ticker-content { display: flex; animation: ticker-scroll 25s linear infinite; white-space: nowrap; }
+        .ticker-item { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; padding: 0 40px; opacity: 0.5; font-weight: 300; color: #FFFFFF; }
+        .ticker-item span { color: #FFFFFF; font-weight: 500; }
+        @keyframes ticker-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        
+        /* ===== FOOTER ===== */
+        .footer { padding: 60px 0 30px; background: #1A1A1A; color: #FFFFFF; border-top: 1px solid rgba(255,255,255,0.05); }
+        .footer-content { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 30px; }
+        .footer-brand img { height: 28px; width: auto; }
+        .footer-links { display: flex; gap: 30px; }
+        .footer-links a { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; opacity: 0.4; transition: opacity 0.3s; color: #FFFFFF; }
+        .footer-links a:hover { opacity: 1; }
+        .footer-disclaimer { width: 100%; font-size: 10px; opacity: 0.3; text-align: center; margin-top: 30px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.05); }
+        
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 992px) {
+            .hero-title { font-size: 56px; }
+            .about-grid { grid-template-columns: 1fr; gap: 40px; }
+            .brand-grid { grid-template-columns: repeat(3, 1fr); }
+            .collection-grid { grid-template-columns: 1fr 1fr; }
+            .staking-grid { grid-template-columns: 1fr 1fr; }
+            .counter-grid { grid-template-columns: 1fr; gap: 30px; }
+        }
+        @media (max-width: 768px) {
+            .container { padding: 0 20px; }
+            .header { padding: 16px 20px; flex-wrap: wrap; gap: 10px; }
+            .nav a { margin-left: 16px; font-size: 10px; }
+            .hero-title { font-size: 40px; letter-spacing: -1px; }
+            .hero-stats { gap: 20px; }
+            .brand-grid { grid-template-columns: repeat(2, 1fr); }
+            .collection-grid { grid-template-columns: 1fr; }
+            .staking-grid { grid-template-columns: 1fr; }
+            .about-features { grid-template-columns: 1fr; }
+            .footer-content { flex-direction: column; text-align: center; }
+            .counter-number { font-size: 40px; }
+            .contract-box code { font-size: 12px; }
+        }
+        @media (max-width: 480px) {
+            .hero-title { font-size: 32px; }
+            .hero-subtitle { font-size: 12px; letter-spacing: 4px; }
+            .brand-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header" id="header">
+        <a href="index.html" class="logo">
+            <img src="cos_logo.jpg" alt="COS" height="32">
+        </a>
+        <nav class="nav">
+            <a href="#about" data-i18n="nav_about">About</a>
+            <a href="#collection" data-i18n="nav_collection">Collection</a>
+            <a href="#staking" data-i18n="nav_staking">Staking</a>
+            <a href="fintech.html" data-i18n="nav_fintech">Fintech</a>
+            <a href="editorial.html" data-i18n="nav_editorial">Editorial</a>
+        </nav>
+        <div class="header-controls">
+            <select class="lang-select" id="langSelect">
+                <option value="en">🇬🇧 EN</option>
+                <option value="ru">🇷🇺 RU</option>
+                <option value="zh">🇨🇳 中文</option>
+                <option value="es">🇪🇸 ES</option>
+                <option value="fr">🇫🇷 FR</option>
+                <option value="de">🇩🇪 DE</option>
+                <option value="it">🇮🇹 IT</option>
+                <option value="pt">🇵🇹 PT</option>
+                <option value="ja">🇯🇵 日本語</option>
+                <option value="ar">🇸🇦 العربية</option>
+            </select>
+            <button class="wallet-btn" id="connectWallet" data-i18n="wallet_btn">Connect Wallet</button>
+        </div>
+    </header>
+
+    <!-- HERO (video 1) -->
+    <section class="hero">
+        <video class="hero-video" autoplay muted loop playsinline>
+            <source src="video-cos-hero.mp4" type="video/mp4">
+        </video>
+        <div class="hero-content">
+            <div class="hero-badge" data-i18n="hero_badge">⚡ Consensus Oracle Synchronizer</div>
+            <h1 class="hero-title">COS <span>.</span></h1>
+            <p class="hero-subtitle" data-i18n="hero_subtitle">Sync Oracles Across Chains — Stake for Rewards</p>
+            <div class="hero-stats">
+                <div class="stat">
+                    <div class="stat-value">$1.00</div>
+                    <div class="stat-label" data-i18n="stat_price">COS Price</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">$10B</div>
+                    <div class="stat-label" data-i18n="stat_mcap">Market Cap</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">9</div>
+                    <div class="stat-label" data-i18n="stat_holders">Holders</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">$302M</div>
+                    <div class="stat-label" data-i18n="stat_liquidity">Liquidity</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT (video 2 - фон) -->
+    <section class="about" id="about">
+        <div class="about-video-bg">
+            <video autoplay muted loop playsinline>
+                <source src="video-cos-abstract.mp4" type="video/mp4">
+            </video>
+        </div>
+        <div class="about-overlay"></div>
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-image">
+                    <img src="photo-cos-model-woman.jpg" alt="COS" loading="lazy">
+                </div>
+                <div class="about-text">
+                    <h2 data-i18n="about_title">COS — <span>Not a Meme</span></h2>
+                    <p data-i18n="about_desc">Consensus Oracle Synchronizer. The minimalist gateway token of the BYT ecosystem, designed for seamless oracle synchronization across chains. Built for clarity, efficiency, and consensus.</p>
+                    <div class="about-features">
+                        <div class="feature"><div class="feature-icon">⚡</div><div class="feature-title" data-i18n="feature_sync">Sync Oracles</div></div>
+                        <div class="feature"><div class="feature-icon">🌐</div><div class="feature-title" data-i18n="feature_cross">Cross-Chain</div></div>
+                        <div class="feature"><div class="feature-icon">🔗</div><div class="feature-title" data-i18n="feature_gateway">Consensus Gateway</div></div>
+                        <div class="feature"><div class="feature-icon">🏆</div><div class="feature-title" data-i18n="feature_rewards">Stake for Rewards</div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ECOSYSTEM -->
+    <section class="ecosystem" id="ecosystem">
+        <div class="container">
+            <div class="section-header">
+                <h2 data-i18n="ecosystem_title">BYT <span>Ecosystem</span></h2>
+                <p data-i18n="ecosystem_desc">12 brand tokens in one ecosystem</p>
+            </div>
+            <div class="brand-grid">
+                <div class="brand-card"><div class="brand-logo">COS</div><div class="brand-name">COS</div><div class="brand-price">$1.00</div></div>
+                <div class="brand-card"><div class="brand-logo">GUCCI</div><div class="brand-name">GUCCI</div><div class="brand-price">$1.00</div></div>
+                <div class="brand-card"><div class="brand-logo">DKNY</div><div class="brand-name">Donna Kahn NY</div><div class="brand-price">$1.00</div></div>
+                <div class="brand-card"><div class="brand-logo">NIKE</div><div class="brand-name">Nike</div><div class="brand-price">$1.00</div></div>
+                <div class="brand-card"><div class="brand-logo">PUMA</div><div class="brand-name">PUMA</div><div class="brand-price">$1.00</div></div>
+                <div class="brand-card"><div class="brand-logo">ZARA</div><div class="brand-name">ZARA</div><div class="brand-price">$0.00043</div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- COLLECTION (video 3 - фон) -->
+    <section class="collection" id="collection">
+        <div class="collection-video-bg">
+            <video autoplay muted loop playsinline>
+                <source src="video-cos-collection.mp4" type="video/mp4">
+            </video>
+        </div>
+        <div class="collection-overlay"></div>
+        <div class="container">
+            <div class="section-header">
+                <h2 data-i18n="collection_title">COS <span>Collection</span></h2>
+                <p data-i18n="collection_desc">Minimalist digital capsules & modern fashion</p>
+            </div>
+            <div class="collection-grid">
+                <div class="collection-card">
+                    <img src="photo-cos-studio.jpg" alt="COS Studio" loading="lazy">
+                    <div class="overlay">
+                        <h3>Studio Collection</h3>
+                        <p>Scandinavian simplicity. Timeless design.</p>
+                    </div>
+                </div>
+                <div class="collection-card">
+                    <img src="photo-cos-model-night.jpg" alt="COS Night" loading="lazy">
+                    <div class="overlay">
+                        <h3>Night Collection</h3>
+                        <p>Minimalist. Refined. Effortless.</p>
+                    </div>
+                </div>
+                <div class="collection-card">
+                    <img src="photo-cos-details.jpg" alt="COS Details" loading="lazy">
+                    <div class="overlay">
+                        <h3>Details & Craftsmanship</h3>
+                        <p>Precise. Clean. Elevated.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- STAKING -->
+    <section class="staking" id="staking">
+        <div class="container">
+            <div class="section-header">
+                <h2 data-i18n="staking_title">Staking <span>COS</span></h2>
+                <p data-i18n="staking_desc">Earn up to 30% APY in BYT tokens</p>
+            </div>
+            <div class="staking-grid">
+                <div class="pool-card">
+                    <div class="pool-icon">💎</div>
+                    <h3 data-i18n="pool_basic_title">Basic Pool</h3>
+                    <div class="apy">15% <small data-i18n="apy_label">APY</small></div>
+                    <p class="pool-desc" data-i18n="pool_basic_desc">Entry level for all holders</p>
+                    <a href="#" class="pool-btn" data-i18n="pool_btn">Stake Now</a>
+                </div>
+                <div class="pool-card premium">
+                    <div class="pool-icon">👑</div>
+                    <h3 data-i18n="pool_premium_title">Premium Pool</h3>
+                    <div class="apy">30% <small data-i18n="apy_label">APY</small></div>
+                    <p class="pool-desc" data-i18n="pool_premium_desc">Requires 1,000 COS staked</p>
+                    <a href="#" class="pool-btn" data-i18n="pool_btn">Stake Now</a>
+                </div>
+                <div class="pool-card">
+                    <div class="pool-icon">🌟</div>
+                    <h3 data-i18n="pool_creator_title">Creator Pool</h3>
+                    <div class="apy">40% <small data-i18n="apy_label">APY</small></div>
+                    <p class="pool-desc" data-i18n="pool_creator_desc">Exclusive for ecosystem builders</p>
+                    <a href="#" class="pool-btn" data-i18n="pool_btn">Stake Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- LIQUIDITY -->
+    <section class="liquidity-section" id="liquidity">
+        <div class="container">
+            <div class="section-header">
+                <h2 data-i18n="liquidity_title">Liquidity <span>Pool</span></h2>
+                <p data-i18n="liquidity_desc">Real liquidity on Meteora V2</p>
+            </div>
+            <div class="staking-grid">
+                <div class="pool-card" style="background: #F5F5F5;">
+                    <div class="pool-icon">💱</div>
+                    <h3>COS / USDT</h3>
+                    <div class="apy">$301.9M <small data-i18n="liquidity_label">liquidity</small></div>
+                    <p class="pool-desc" data-i18n="pool_meteora">Meteora V2 • Age: 4 months</p>
+                    <a href="https://www.geckoterminal.com/solana/pools/GeYH9xpim45PVZisJGT9SoezZvtb4EKWHKo138uiNZv9" target="_blank" class="pool-btn" data-i18n="pool_open">Open Pool →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTRACT -->
+    <section class="contract-section">
+        <div class="container">
+            <div class="contract-box">
+                <h3 data-i18n="contract_title">📜 Contract Address</h3>
+                <code id="contractAddress">7eVmwDbre8kz2gBEHXT4nxc65tpSpDksoE9s6V5pBkcn</code>
+                <button class="copy-btn" onclick="copyAddress()" data-i18n="contract_copy">📋 Copy Address</button>
+                <div class="links">
+                    <a href="https://opensea.io/token/solana/7eVmwDbre8kz2gBEHXT4nxc65tpSpDksoE9s6V5pBkcn" target="_blank" data-i18n="contract_opensea">View on OpenSea</a>
+                    <a href="https://www.geckoterminal.com/solana/pools/GeYH9xpim45PVZisJGT9SoezZvtb4EKWHKo138uiNZv9" target="_blank" data-i18n="contract_gecko">View on GeckoTerminal</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- COUNTER -->
+    <section class="counter-section">
+        <div class="container">
+            <div class="counter-grid">
+                <div class="counter-item">
+                    <div class="counter-number counter-visitors">119,800</div>
+                    <div class="counter-label" data-i18n="counter_visitors">Unique Visitors</div>
+                    <div class="counter-timestamp counter-visitor-time" data-i18n="counter_since">Since 2026</div>
+                </div>
+                <div class="counter-item">
+                    <div class="counter-number counter-clients">36</div>
+                    <div class="counter-label" data-i18n="counter_clients">Active Clients</div>
+                    <div class="counter-timestamp counter-client-time" data-i18n="counter_verified">Verified on-chain</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TICKER -->
+    <div class="ticker">
+        <div class="ticker-content">
+            <span class="ticker-item">✦ COS is <span>not a meme</span></span>
+            <span class="ticker-item">✦ Consensus Oracle Synchronizer</span>
+            <span class="ticker-item">✦ Sync oracles <span>across chains</span></span>
+            <span class="ticker-item">✦ Stake for <span>consensus rewards</span></span>
+            <span class="ticker-item">✦ Minimalist gateway <span>to Web3</span></span>
+            <span class="ticker-item">✦ Staking APY up to <span>40%</span></span>
+            <span class="ticker-item">✦ COS is <span>not a meme</span></span>
+            <span class="ticker-item">✦ Consensus Oracle Synchronizer</span>
+            <span class="ticker-item">✦ Sync oracles <span>across chains</span></span>
+            <span class="ticker-item">✦ Stake for <span>consensus rewards</span></span>
+            <span class="ticker-item">✦ Minimalist gateway <span>to Web3</span></span>
+            <span class="ticker-item">✦ Staking APY up to <span>40%</span></span>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <img src="cos_logo.jpg" alt="COS" height="28">
+                </div>
+                <div class="footer-links">
+                    <a href="#about" data-i18n="footer_about">About</a>
+                    <a href="#collection" data-i18n="footer_collection">Collection</a>
+                    <a href="#staking" data-i18n="footer_staking">Staking</a>
+                    <a href="fintech.html" data-i18n="footer_fintech">Fintech</a>
+                    <a href="editorial.html" data-i18n="footer_editorial">Editorial</a>
+                    <a href="https://t.me/cos_token" target="_blank" data-i18n="footer_telegram">Telegram</a>
+                    <a href="#" target="_blank" data-i18n="footer_twitter">Twitter</a>
+                </div>
+            </div>
+            <div class="footer-disclaimer" data-i18n="footer_disclaimer">
+                ⚠️ <strong>COS</strong> is an independent SPL token (Consensus Oracle Synchronizer). 
+                Not affiliated with COS (H&M Group). The token is part of the BYT ecosystem and serves as 
+                a utility token for oracle synchronization across chains. All brand names are fictional 
+                abbreviations used within the BYT ecosystem.
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script>
+        // ============================================================
+        // ===== ПЕРЕВОДЧИК =====
+        // ============================================================
+        const translations = {
+            en: {
+                nav_about: 'About',
+                nav_collection: 'Collection',
+                nav_staking: 'Staking',
+                nav_fintech: 'Fintech',
+                nav_editorial: 'Editorial',
+                wallet_btn: 'Connect Wallet',
+                hero_badge: '⚡ Consensus Oracle Synchronizer',
+                hero_subtitle: 'Sync Oracles Across Chains — Stake for Rewards',
+                stat_price: 'COS Price',
+                stat_mcap: 'Market Cap',
+                stat_holders: 'Holders',
+                stat_liquidity: 'Liquidity',
+                about_title: 'COS — <span>Not a Meme</span>',
+                about_desc: 'Consensus Oracle Synchronizer. The minimalist gateway token of the BYT ecosystem, designed for seamless oracle synchronization across chains. Built for clarity, efficiency, and consensus.',
+                feature_sync: 'Sync Oracles',
+                feature_cross: 'Cross-Chain',
+                feature_gateway: 'Consensus Gateway',
+                feature_rewards: 'Stake for Rewards',
+                ecosystem_title: 'BYT <span>Ecosystem</span>',
+                ecosystem_desc: '12 brand tokens in one ecosystem',
+                collection_title: 'COS <span>Collection</span>',
+                collection_desc: 'Minimalist digital capsules & modern fashion',
+                staking_title: 'Staking <span>COS</span>',
+                staking_desc: 'Earn up to 30% APY in BYT tokens',
+                pool_basic_title: 'Basic Pool',
+                pool_premium_title: 'Premium Pool',
+                pool_creator_title: 'Creator Pool',
+                pool_basic_desc: 'Entry level for all holders',
+                pool_premium_desc: 'Requires 1,000 COS staked',
+                pool_creator_desc: 'Exclusive for ecosystem builders',
+                pool_btn: 'Stake Now',
+                apy_label: 'APY',
+                liquidity_title: 'Liquidity <span>Pool</span>',
+                liquidity_desc: 'Real liquidity on Meteora V2',
+                liquidity_label: 'liquidity',
+                pool_meteora: 'Meteora V2 • Age: 4 months',
+                pool_open: 'Open Pool →',
+                contract_title: '📜 Contract Address',
+                contract_copy: '📋 Copy Address',
+                contract_opensea: 'View on OpenSea',
+                contract_gecko: 'View on GeckoTerminal',
+                counter_visitors: 'Unique Visitors',
+                counter_clients: 'Active Clients',
+                counter_since: 'Since 2026',
+                counter_verified: 'Verified on-chain',
+                footer_about: 'About',
+                footer_collection: 'Collection',
+                footer_staking: 'Staking',
+                footer_fintech: 'Fintech',
+                footer_editorial: 'Editorial',
+                footer_telegram: 'Telegram',
+                footer_twitter: 'Twitter',
+                footer_disclaimer: '⚠️ <strong>COS</strong> is an independent SPL token (Consensus Oracle Synchronizer). Not affiliated with COS (H&M Group). The token is part of the BYT ecosystem and serves as a utility token for oracle synchronization across chains. All brand names are fictional abbreviations used within the BYT ecosystem.'
+            },
+            ru: {
+                nav_about: 'О нас',
+                nav_collection: 'Коллекция',
+                nav_staking: 'Стейкинг',
+                nav_fintech: 'Финтех',
+                nav_editorial: 'Журнал',
+                wallet_btn: 'Подключить кошелек',
+                hero_badge: '⚡ Синхронизатор консенсусных оракулов',
+                hero_subtitle: 'Синхронизируй оракулы между сетями — стейкай для наград',
+                stat_price: 'Цена COS',
+                stat_mcap: 'Рыночная капа',
+                stat_holders: 'Холдеры',
+                stat_liquidity: 'Ликвидность',
+                about_title: 'COS — <span>Не мем</span>',
+                about_desc: 'Синхронизатор консенсусных оракулов. Минималистичный токен-шлюз экосистемы BYT, созданный для бесшовной синхронизации оракулов между сетями. Создан для ясности, эффективности и консенсуса.',
+                feature_sync: 'Синхронизация оракулов',
+                feature_cross: 'Кросс-чейн',
+                feature_gateway: 'Консенсусный шлюз',
+                feature_rewards: 'Стейкай для наград',
+                ecosystem_title: 'Экосистема <span>BYT</span>',
+                ecosystem_desc: '12 брендовых токенов в одной экосистеме',
+                collection_title: 'Коллекция <span>COS</span>',
+                collection_desc: 'Минималистичные цифровые капсулы и современная мода',
+                staking_title: 'Стейкинг <span>COS</span>',
+                staking_desc: 'Зарабатывайте до 30% годовых в токенах BYT',
+                pool_basic_title: 'Базовый пул',
+                pool_premium_title: 'Премиум пул',
+                pool_creator_title: 'Креаторский пул',
+                pool_basic_desc: 'Входной уровень для всех холдеров',
+                pool_premium_desc: 'Требуется 1,000 COS в стейкинге',
+                pool_creator_desc: 'Эксклюзивно для строителей экосистемы',
+                pool_btn: 'Застейкать',
+                apy_label: 'APY',
+                liquidity_title: 'Пул <span>Ликвидности</span>',
+                liquidity_desc: 'Реальная ликвидность на Meteora V2',
+                liquidity_label: 'ликвидность',
+                pool_meteora: 'Meteora V2 • Возраст: 4 месяца',
+                pool_open: 'Открыть пул →',
+                contract_title: '📜 Адрес контракта',
+                contract_copy: '📋 Копировать адрес',
+                contract_opensea: 'Посмотреть на OpenSea',
+                contract_gecko: 'Посмотреть на GeckoTerminal',
+                counter_visitors: 'Уникальные посетители',
+                counter_clients: 'Активные клиенты',
+                counter_since: 'С 2026',
+                counter_verified: 'Верифицировано в блокчейне',
+                footer_about: 'О нас',
+                footer_collection: 'Коллекция',
+                footer_staking: 'Стейкинг',
+                footer_fintech: 'Финтех',
+                footer_editorial: 'Журнал',
+                footer_telegram: 'Telegram',
+                footer_twitter: 'Twitter',
+                footer_disclaimer: '⚠️ <strong>COS</strong> — независимый SPL-токен (Consensus Oracle Synchronizer). Не аффилирован с COS (H&M Group). Токен является частью экосистемы BYT и служит утилитарным токеном для синхронизации оракулов между сетями. Все названия брендов являются вымышленными аббревиатурами, используемыми в экосистеме BYT.'
+            }
+            // Добавьте остальные языки (zh, es, fr, de, it, pt, ja, ar) по аналогии с предыдущими проектами
+        };
+
+        function changeLanguage(lang) {
+            const elements = document.querySelectorAll('[data-i18n]');
+            elements.forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    el.innerHTML = translations[lang][key];
+                }
+            });
+            localStorage.setItem('cos_lang', lang);
+        }
+
+        document.getElementById('langSelect').addEventListener('change', function() {
+            changeLanguage(this.value);
+        });
+
+        const savedLang = localStorage.getItem('cos_lang') || 'en';
+        document.getElementById('langSelect').value = savedLang;
+        changeLanguage(savedLang);
+
+        // ============================================================
+        // ===== ОСТАЛЬНЫЕ СКРИПТЫ =====
+        // ============================================================
+
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        document.getElementById('connectWallet').addEventListener('click', function() {
+            alert('🔗 Connect Solana Wallet (Phantom/Backpack)');
+        });
+
+        function copyAddress() {
+            const address = document.getElementById('contractAddress').textContent;
+            navigator.clipboard.writeText(address).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                const originalText = btn.textContent;
+                btn.textContent = '✅ Copied!';
+                setTimeout(() => { btn.textContent = originalText; }, 2000);
+            }).catch(() => {
+                alert('Press Ctrl+C to copy: ' + address);
+            });
+        }
+    </script>
+    
+    <script src="counter.js"></script>
+</body>
+</html>
