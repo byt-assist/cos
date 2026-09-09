@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COS Editorial — BYT Ecosystem</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #FFFFFF; color: #1A1A1A; line-height: 1.6; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 40px; }
+        
+        .header { position: fixed; top: 0; left: 0; width: 100%; padding: 16px 40px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); box-shadow: 0 2px 20px rgba(0,0,0,0.05); }
+        .logo img { height: 32px; width: auto; }
+        .nav a { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; margin-left: 30px; opacity: 0.6; color: #1A1A1A; text-decoration: none; transition: opacity 0.3s; font-weight: 500; }
+        .nav a:hover { opacity: 1; }
+        .nav a.active { opacity: 1; font-weight: 600; }
+        
+        .page-hero { padding: 120px 0 60px; text-align: center; background: #F5F5F5; }
+        .page-title { font-size: 48px; font-weight: 300; letter-spacing: 2px; }
+        .page-title span { font-weight: 600; }
+        .page-subtitle { font-size: 16px; opacity: 0.5; margin-top: 12px; }
+        
+        .editorial-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 30px; margin: 40px 0; }
+        .editorial-card { background: #F5F5F5; border-radius: 4px; overflow: hidden; transition: all 0.3s; }
+        .editorial-card:hover { transform: translateY(-4px); background: #E8E8E8; }
+        .editorial-card img { width: 100%; height: 300px; object-fit: cover; }
+        .editorial-card .content { padding: 24px; }
+        .editorial-card .tag { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; font-weight: 500; opacity: 0.5; }
+        .editorial-card h3 { font-size: 20px; font-weight: 500; margin: 8px 0; }
+        .editorial-card p { font-size: 14px; opacity: 0.6; }
+        .editorial-card .read-more { display: inline-block; margin-top: 12px; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; font-weight: 500; color: #1A1A1A; border-bottom: 1px solid #1A1A1A; padding-bottom: 2px; }
+        .editorial-card .read-more:hover { border-color: #999; color: #999; }
+        
+        .counter-section { padding: 60px 0; background: #FFFFFF; border-top: 1px solid #F0F0F0; border-bottom: 1px solid #F0F0F0; }
+        .counter-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; max-width: 800px; margin: 0 auto; text-align: center; }
+        .counter-item { padding: 30px; background: #F5F5F5; border-radius: 4px; }
+        .counter-number { font-size: 56px; font-weight: 300; color: #1A1A1A; }
+        .counter-label { font-size: 12px; text-transform: uppercase; letter-spacing: 3px; opacity: 0.4; margin-top: 8px; }
+        .counter-timestamp { font-size: 10px; opacity: 0.3; margin-top: 16px; font-family: 'Courier New', monospace; }
+        
+        .footer { padding: 60px 0 30px; background: #1A1A1A; color: #FFFFFF; }
+        .footer-content { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 30px; }
+        .footer-brand img { height: 28px; width: auto; }
+        .footer-links { display: flex; gap: 30px; }
+        .footer-links a { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; opacity: 0.4; color: #FFFFFF; text-decoration: none; transition: opacity 0.3s; }
+        .footer-links a:hover { opacity: 1; }
+        .footer-disclaimer { width: 100%; font-size: 10px; opacity: 0.3; text-align: center; margin-top: 30px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.05); }
+        
+        @media (max-width: 992px) {
+            .editorial-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 768px) {
+            .editorial-grid { grid-template-columns: 1fr; }
+            .counter-grid { grid-template-columns: 1fr; gap: 30px; }
+            .page-title { font-size: 32px; }
+            .header { padding: 12px 20px; flex-wrap: wrap; gap: 10px; }
+            .nav a { margin-left: 16px; font-size: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="index.html" class="logo"><img src="cos_logo.jpg" alt="COS" height="32"></a>
+        <nav class="nav">
+            <a href="index.html">Home</a>
+            <a href="fintech.html">Fintech</a>
+            <a href="editorial.html" class="active">Editorial</a>
+        </nav>
+    </header>
+
+    <section class="page-hero">
+        <h1 class="page-title">COS <span>Editorial</span></h1>
+        <p class="page-subtitle">Minimalist fashion, culture & digital innovation</p>
+    </section>
+
+    <div class="container">
+        <div class="editorial-grid">
+            <!-- Карточка 1 -->
+            <div class="editorial-card">
+                <img src="photo-cos-model-woman.jpg" alt="Editorial 1" loading="lazy">
+                <div class="content">
+                    <div class="tag">Fashion</div>
+                    <h3>The New Minimalism</h3>
+                    <p>How COS is redefining modern fashion with clean lines and timeless design.</p>
+                    <a href="#" class="read-more">Read More</a>
+                </div>
+            </div>
+            
+            <!-- Карточка 2 -->
+            <div class="editorial-card">
+                <img src="photo-cos-model-man.jpg" alt="Editorial 2" loading="lazy">
+                <div class="content">
+                    <div class="tag">Culture</div>
+                    <h3>Consensus & Clarity</h3>
+                    <p>Exploring how consensus mechanisms and minimalist design share a common philosophy.</p>
+                    <a href="#" class="read-more">Read More</a>
+                </div>
+            </div>
+            
+            <!-- Карточка 3 -->
+            <div class="editorial-card">
+                <img src="photo-cos-studio.jpg" alt="Editorial 3" loading="lazy">
+                <div class="content">
+                    <div class="tag">Innovation</div>
+                    <h3>Digital Fashion Week</h3>
+                    <p>Behind the scenes of COS's first digital fashion show in the metaverse.</p>
+                    <a href="#" class="read-more">Read More</a>
+                </div>
+            </div>
+            
+            <!-- Карточка 4 -->
+            <div class="editorial-card">
+                <img src="photo-cos-model-night.jpg" alt="Editorial 4" loading="lazy">
+                <div class="content">
+                    <div class="tag">Design</div>
+                    <h3>Texture & Form</h3>
+                    <p>A deep dive into the craftsmanship behind COS's digital collections.</p>
+                    <a href="#" class="read-more">Read More</a>
+                </div>
+            </div>
+            
+            <!-- Карточка 5 -->
+            <div class="editorial-card">
+                <img src="photo-cos-details.jpg" alt="Editorial 5" loading="lazy">
+                <div class="content">
+                    <div class="tag">Lifestyle</div>
+                    <h3>Digital Wardrobe</h3>
+                    <p>Building a versatile digital capsule for every occasion in the metaverse.</p>
+                    <a href="#" class="read-more">Read More</a>
+                </div>
+            </div>
+            
+            <!-- Карточка 6 -->
+            <div class="editorial-card">
+                <img src="photo-cos-abstract.jpg" alt="Editorial 6" loading="lazy">
+                <div class="content">
+                    <div class="tag">Sustainability</div>
+                    <h3>Digital, Not Destructive</h3>
+                    <p>How digital fashion reduces waste and creates new sustainable economies.</p>
+                    <a href="#" class="read-more">Read More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- COUNTER -->
+    <section class="counter-section">
+        <div class="container">
+            <div class="counter-grid">
+                <div class="counter-item">
+                    <div class="counter-number counter-visitors">119,800</div>
+                    <div class="counter-label">Unique Visitors</div>
+                    <div class="counter-timestamp counter-visitor-time">Since 2026</div>
+                </div>
+                <div class="counter-item">
+                    <div class="counter-number counter-clients">36</div>
+                    <div class="counter-label">Active Clients</div>
+                    <div class="counter-timestamp counter-client-time">Verified on-chain</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand"><img src="cos_logo.jpg" alt="COS" height="28"></div>
+                <div class="footer-links">
+                    <a href="index.html">Home</a>
+                    <a href="fintech.html">Fintech</a>
+                    <a href="editorial.html">Editorial</a>
+                </div>
+            </div>
+            <div class="footer-disclaimer">⚠️ COS is an independent SPL token. Not affiliated with COS (H&M Group). Part of BYT ecosystem.</div>
+        </div>
+    </footer>
+
+    <script src="counter.js"></script>
+</body>
+</html>
